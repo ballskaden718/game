@@ -4,6 +4,8 @@
 #define HIGH 800
 #define WIDE 800
 
+#define TILESIZE 160
+
 
 int main ()
 {
@@ -13,14 +15,20 @@ int main ()
   circle.setFillColor(sf::Color::Red);
   circle.setPosition(100,100);
 
-  sf::RectangleShape pixie(sf::Vector2f(100,100));
-  pixie.setFillColor(sf::Color::Black);
-  pixie.setPosition(WIDE-100,HIGH-100);
-  int circleDir = 100;
+  sf::Texture pixie_texture;
+  if(!pixie_texture.loadFromFile("assets/pixie.png"))
+    {
+      std::cout << "Error loading hero texture!" <<std::endl;
+    }
+    sf::Sprite pixie;
+    pixie.setTexture(pixie_texture);
+    pixie.setScale(sf::Vector2f(5,5));
 
   int herospeed = 1;
 
   int points = 5;
+
+  int circleDir = 0;
   //game loop
   while(window.isOpen() )
   {
@@ -37,11 +45,11 @@ int main ()
         {
           pixie.move(0,-herospeed);
         }
-        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && pixie.getPosition().y < HIGH-pixie.getSize().y)
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && pixie.getPosition().y < HIGH-TILESIZE)
         {
           pixie.move(0,herospeed);
         }
-        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right)&& pixie.getPosition().x < WIDE-pixie.getSize().x)
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right)&& pixie.getPosition().x < WIDE-TILESIZE)
         {
           pixie.move(herospeed,0);
         }
@@ -53,11 +61,11 @@ int main ()
 
         if(pixie.getGlobalBounds().intersects(circle.getGlobalBounds()))
         {
-          std::cout << "DONT TOUCH ME!!!" <<std::endl;
+          //std::cout << "DONT TOUCH ME!!!" <<std::endl;
         }
 
         {
-          std::cout << "computers" << std::endl;
+          //std::cout << "computers" << std::endl;
         }
 
     window.clear(sf::Color::Blue);
